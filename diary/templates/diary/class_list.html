@@ -1,0 +1,12 @@
+{% extends "diary/base.html" %}
+
+{% block content %}
+<h1>{{ subject.name }} - Выберите класс</h1>
+<ul>
+{% for school_class in classes %}
+    <li><a href="{% url 'grades_by_class' subject.id school_class.id %}">{{ school_class }}</a></li>
+{% empty %}
+    <li>Нет классов с учениками</li>
+{% endfor %}
+</ul>
+{% endblock %}

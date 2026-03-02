@@ -1,0 +1,49 @@
+{% extends "diary/base.html" %}
+
+{% block content %}
+
+<h1>Список оцінок</h1>
+
+<form method="get">
+    <select name="subject">
+        <option value="">Всі предмети</option>
+        {% for subject in subjects %}
+            <option value="{{ subject.id }}"
+                {% if subject.id|stringformat:"s" == selected_subject %}
+                    selected
+                {% endif %}
+            >
+                {{ subject.name }}
+            </option>
+        {% endfor %}
+    </select>
+    <button type="submit">Показати</button>
+</form>
+
+<hr>
+
+<table>
+    <tr>
+        <th>Предмет</th>
+        <th>Клас</th>
+        <th>Учень</th>
+        <th>Оцінка</th>
+        <th>Дата</th>
+    </tr>
+
+    {% for grade in grades %}
+    <tr>
+        <td>{{ grade.subject.name }}</td>
+        <td>{{ grade.student.school_class }}</td>
+        <td>{{ grade.student.user.username }}</td>
+        <td>{{ grade.grade }}</td>
+        <td>{{ grade.date }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5">Немає оцінок</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

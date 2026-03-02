@@ -1,0 +1,12 @@
+{% extends "diary/base.html" %}
+
+{% block content %}
+<h1>Выберите предмет</h1>
+<ul>
+{% for subject in subjects %}
+    <li><a href="{% url 'class_list' subject.id %}">{{ subject.name }}</a></li>
+{% empty %}
+    <li>Нет предметов</li>
+{% endfor %}
+</ul>
+{% endblock %}
