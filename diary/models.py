@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -46,7 +48,7 @@ class Grade(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='grades')
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     grade = models.IntegerField(choices=GRADES_CHOICES)
-    date = models.DateField()
+    date = models.DateField(null=True, blank=True, default=timezone.now)
 
     class Meta:
         verbose_name = "Оцінка"

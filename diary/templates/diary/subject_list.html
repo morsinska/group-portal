@@ -1,12 +1,39 @@
 {% extends "diary/base.html" %}
 
 {% block content %}
-<h1>Выберите предмет</h1>
-<ul>
+
+<div class="card p-4">
+
+<h3 class="mb-4">Виберіть предмет</h3>
+
+<div class="row g-3">
+
 {% for subject in subjects %}
-    <li><a href="{% url 'class_list' subject.id %}">{{ subject.name }}</a></li>
+
+<div class="col-md-4">
+
+<a href="{% url 'class_list' subject.id %}" class="text-decoration-none">
+
+<div class="card p-3 text-center h-100">
+
+<h5 class="mb-0">
+📘 {{ subject.name }}
+</h5>
+
+</div>
+
+</a>
+
+</div>
+
 {% empty %}
-    <li>Нет предметов</li>
+
+<p>Предметів поки немає</p>
+
 {% endfor %}
-</ul>
+
+</div>
+
+</div>
+
 {% endblock %}

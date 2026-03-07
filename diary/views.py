@@ -1,11 +1,21 @@
 from datetime import date
 
+
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, TemplateView, UpdateView, DeleteView
 from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
 from .models import Student, SchoolClass, Subject, Grade
 from .forms import GradeForm
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
+
+
+
+#class RegisterView(CreateView):
+#    form_class = RegisterForm
+#    template_name = "diary/register.html"
+#    success_url = reverse_lazy("login")
 
 
 class StudentListView(TemplateView):
@@ -37,27 +47,6 @@ class StudentListView(TemplateView):
         context["selected_subject"] = subject_id
 
         return context
-
-
-
-
-
-
-
-
-#class StudentListView(ListView):
-#    model = Student
-#    template_name = 'student_list.html'
-#    context_object_name = 'students'
-
-#    def get_queryset(self):
-#        return (
-#            Student.objects
-#            .select_related('school_class', 'user')
-#            .prefetch_related('grades__subject')
-#            .order_by('school_class__class_number',
-#                      'school_class__class_letter')
-#        )
 
 
 class SubjectListView(ListView):
@@ -106,13 +95,13 @@ class StudentGradeView(TemplateView):
                     student=student,
                     subject=subject,
                     grade=int(grade_value),
-                    date=timezone.now()
+                    date=grade_date if grade_date else timezone.now().date()
                 )
         return redirect(request.path)
 
 
 
-class MyGradesView(LoginRequiredMixin, ListView):
+class MyGradesView(ListView):
     model = Grade
     template_name = 'diary/my_grades.html'
     context_object_name = 'grades'
@@ -121,6 +110,21 @@ class MyGradesView(LoginRequiredMixin, ListView):
         return Grade.objects.filter(student__user=self.request.user).select_related('subject', 'student__school_class').order_by('-date')
 
 
+class GradeUpdateView(UpdateView):
+    model = Grade
+    form_class = GradeForm
+    template_name = 'diary/grade_update.html'
+    success_url = reverse_lazy('student_list')
+
+
+
+
+
+
+class GradeDeleteView(DeleteView):
+    model = Grade
+    template_name = 'diary/grade_delete.html'
+    success_url = reverse_lazy('student_list')
 
 
 

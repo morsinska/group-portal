@@ -1,0 +1,21 @@
+{% extends "diary/base.html" %}
+
+{% block content %}
+
+<div class="card p-4 text-center">
+
+<h3 class="mb-4 text-danger">Видалити оцінку</h3>
+
+<p>Ви дійсно хочете видалити оцінку <strong>{{ grade.grade }}</strong> учня
+<strong>{{ grade.student.user.username }}</strong> з предмету <strong>{{ grade.subject.name }}</strong>?</p>
+
+<form method="post" class="d-inline">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Видалити</button>
+</form>
+
+<a href="{% url 'student_list' %}" class="btn btn-secondary ms-2">Скасувати</a>
+
+</div>
+
+{% endblock %}

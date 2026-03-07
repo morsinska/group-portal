@@ -2,48 +2,103 @@
 
 {% block content %}
 
-<h1>Список оцінок</h1>
+<div class="card p-4">
 
-<form method="get">
-    <select name="subject">
-        <option value="">Всі предмети</option>
-        {% for subject in subjects %}
-            <option value="{{ subject.id }}"
-                {% if subject.id|stringformat:"s" == selected_subject %}
-                    selected
-                {% endif %}
-            >
-                {{ subject.name }}
-            </option>
-        {% endfor %}
-    </select>
-    <button type="submit">Показати</button>
+<h3 class="mb-4">Список оцінок</h3>
+
+<form method="get" class="row g-3 mb-4">
+
+<div class="col-md-4">
+
+<select name="subject" class="form-select">
+
+<option value="">Всі предмети</option>
+
+{% for subject in subjects %}
+<option value="{{ subject.id }}"
+{% if subject.id|stringformat:"s" == selected_subject %}
+selected
+{% endif %}
+>
+{{ subject.name }}
+</option>
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="col-auto">
+<button class="btn btn-primary">Показати</button>
+</div>
+
 </form>
 
-<hr>
+<div class="table-responsive">
 
-<table>
-    <tr>
-        <th>Предмет</th>
-        <th>Клас</th>
-        <th>Учень</th>
-        <th>Оцінка</th>
-        <th>Дата</th>
-    </tr>
+<table class="table table-dark table-hover align-middle">
 
-    {% for grade in grades %}
-    <tr>
-        <td>{{ grade.subject.name }}</td>
-        <td>{{ grade.student.school_class }}</td>
-        <td>{{ grade.student.user.username }}</td>
-        <td>{{ grade.grade }}</td>
-        <td>{{ grade.date }}</td>
-    </tr>
-    {% empty %}
-    <tr>
-        <td colspan="5">Немає оцінок</td>
-    </tr>
-    {% endfor %}
+<thead>
+<tr>
+<th>Предмет</th>
+<th>Клас</th>
+<th>Учень</th>
+<th>Оцінка</th>
+<th>Дата</th>
+<th class="text-end">Дії</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for grade in grades %}
+
+<tr>
+
+<td>{{ grade.subject.name }}</td>
+<td>{{ grade.student.school_class }}</td>
+<td>{{ grade.student.user.username }}</td>
+
+<td>
+<span class="badge bg-primary">
+{{ grade.grade }}
+</span>
+</td>
+
+<td>{{ grade.date }}</td>
+
+<td class="text-end">
+
+<a href="{% url 'grade_edit' grade.id %}"
+class="btn btn-sm btn-warning">
+Редагувати
+</a>
+
+<a href="{% url 'grade_delete' grade.id %}"
+class="btn btn-sm btn-danger">
+Видалити
+</a>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="6" class="text-center text-secondary">
+Оцінок поки немає
+</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
 </table>
+
+</div>
+
+</div>
 
 {% endblock %}
